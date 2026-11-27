@@ -6,8 +6,6 @@
 # Download and run in one line (Terminal):
 #   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
 #
-# Or paste the one directly:
-#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command | bash
 set -euo pipefail
 
 PORTAL="support.kualkon.top"

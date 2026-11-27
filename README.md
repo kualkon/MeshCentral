@@ -16,12 +16,6 @@
 curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
 ```
 
-или ещё короче (скрипт сам скачает копию в `/tmp`):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command | bash
-```
-
 Дальше нужно только ввести пароль administrator по запросу `sudo` (символы не отображаются —
 это нормально) и подождать 20–30 секунд. Ни `chmod`, ни правый клик «Open» не нужны:
 скрипт повышает права через `sudo bash`, поэтому работает даже без бита исполнения.
