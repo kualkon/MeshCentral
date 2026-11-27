@@ -1,72 +1,46 @@
-# MeshCentral agent installers for Intel Macs
+# MeshCentral agents for Intel Macs
 
-Готовые самоустанавливающиеся агенты MeshCentral для Intel-Mac: две отдельные версии под
-**macOS 10.13.x High Sierra** и **macOS 12.x Monterey**. Оба варианта работают с
-порталом `https://support.kualkon.top` и кладут устройство в группу **Test**.
+Два варианта установки агента MeshCentral для Intel-Mac с порталом `https://support.kualkon.top`
+(устройства попадают в группу **Test**):
 
-| Версия | ОС | Клиентский файл | Исходник |
-|---|---|---|---|
-| High Sierra | 10.13.6 | `setup_meshagent.command` | `setup_meshagent_highsierra.sh` |
-| Monterey | 12.x | `setup_meshagent_monterey.command` | `setup_meshagent_monterey.sh` |
+- **macOS 10.13.x High Sierra** — классическая пара файлов `setup_meshagent.command` /
+  `setup_meshagent_highsierra.sh` (без изменений).
+- **macOS 12.x Monterey** — один файл `setup_meshagent_monterey.command`, который скачивается
+  и запускается одной командой в Terminal.
 
-Оба скрипта:
+## Monterey: скачать и запустить
 
-1. Получают **свежий одноразовый `meshid`** со страницы приглашения Mesh-портала
-   (портал выдаёт новый код при каждом открытии — захардкоженный код быстро перестаёт работать).
-2. Скачивают официальный `MeshAgent.pkg` по этому приглашению (`ARCHID 16`, Intel x86-64).
-3. Устанавливают пакет и пишут `/Library/LaunchDaemons/meshagent.plist` с флагом
-   **`--disableUpdate=1`**, чтобы агент не обновился до несовместимой сборки.
-4. Отключают вспомогательный `meshagent-launchagent`, который может падать с `EX_CONFIG`.
-5. Запускают службу через `launchctl` и проверяют TCP-соединение с порталом.
+Откройте Terminal на клиентском Mac и вставьте **одну строку**:
 
-Скрипты **идемпотентны**: если агент уже работает и подключён, печатается
-`Agent is already running and connected (PID ...). Nothing to do.` и выход.
-
-## Почему две версии
-
-Актуальный агент MeshCentral собирается с новым SDK (macOS 11+) и не запускается на
-High Sierra:
-
-```
-dyld: cannot load 'meshagent' (load command 0x80000034 is unknown)
+```bash
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
 ```
 
-Поэтому **High Sierra**-версия дополнительно скачивает последнюю совместимую сборку
-(`macOS_May-2022.zip`, из issue `Ylianst/MeshAgent#137`), ставит пакет и заменяет
-несовместимый бинарник рабочим.
+или ещё короче (скрипт сам скачает копию в `/tmp`):
 
-**Monterey** (macOS 12) уже относится к macOS 11+, поэтому свежий агент работает
-нативно — замены бинарника нет. Версия просто ставит официальный Intel-пакет и
-фиксирует конфигурацию. Перед установкой проверяется архитектура: только Intel
-x86-64 (`ARCHID 16`); на Apple Silicon скрипт остановится с понятной ошибкой.
-Если версия macOS не 12.x — выводится предупреждение, но установка продолжается.
-
-## Файлы
-
-| Файл | Назначение |
-|---|---|
-| `setup_meshagent.command` | High Sierra, рабочая копия для клиента: двойной клик в Finder → Terminal → пароль administrator |
-| `setup_meshagent_highsierra.sh` | High Sierra, исходник/мастер для редактирования и рассылки |
-| `setup_meshagent_monterey.command` | Monterey, рабочая копия для клиента: двойной клик в Finder → Terminal → пароль administrator |
-| `setup_meshagent_monterey.sh` | Monterey, исходник/мастер для редактирования и рассылки |
-
-Пары `.command` / `.sh` идентичны по содержимому. SHA256:
-
-```
-aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad  setup_meshagent.command
-aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad  setup_meshagent_highsierra.sh
-2aea69ad12148e417e641650b4dce5fb8228c2cdf0df21b5252d654277f00185  setup_meshagent_monterey.command
-2aea69ad12148e417e641650b4dce5fb8228c2cdf0df21b5252d654277f00185  setup_meshagent_monterey.sh
+```bash
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command | bash
 ```
 
-## Использование (для клиента)
+Дальше нужно только ввести пароль administrator по запросу `sudo` (символы не отображаются —
+это нормально) и подождать 20–30 секунд. Ни `chmod`, ни правый клик «Open» не нужны:
+скрипт повышает права через `sudo bash`, поэтому работает даже без бита исполнения.
 
-1. Скопировать нужный `.command` на Desktop клиентского Mac:
-   `setup_meshagent.command` — для High Sierra, `setup_meshagent_monterey.command` — для Monterey.
-2. Двойной клик по файлу. Если macOS ругается на «скачанный из интернета» — правый клик → **Open**.
-3. Ввести пароль administrator в Terminal (символы не отображаются — нормально).
-4. Подождать 20–30 секунд.
-5. В конце увидеть:
+> После мержа PR замените `opencode/monterey-installer` в ссылках на `main`.
+
+### Что делает скрипт
+
+1. Проверяет macOS 12.x и Intel x86-64 (`ARCHID 16`); на Apple Silicon останавливается.
+2. Если агент уже работает и подключён — ничего не меняет
+   (`Agent is already running and connected (PID ...). Nothing to do.`).
+3. Получает **свежий одноразовый `meshid`** со страницы приглашения портала — хардкодить его
+   нельзя, портал выдаёт новый код при каждом открытии.
+4. Скачивает официальный `MeshAgent.pkg`, устанавливает его.
+5. Пишет `/Library/LaunchDaemons/meshagent.plist` с флагом **`--disableUpdate=1`**.
+6. Отключает вспомогательный `meshagent-launchagent`, который может падать с `EX_CONFIG`.
+7. Запускает службу через `launchctl` и проверяет TCP-соединение с порталом.
+
+В конце видно:
 
 ```
 --- verification ---
@@ -78,49 +52,55 @@ meshagent <PID> root ... TCP <local-ip>:<port>->173.212.230.119:443 (ESTABLISHED
 Done. Check the device in MeshCentral (group Test).
 ```
 
-6. Закрыть Terminal. Агент останется службой и поднимется после перезагрузки.
-7. В Mesh-портале (`https://support.kualkon.top`) устройство появится в группе **Test** онлайн.
+## High Sierra (без изменений)
+
+Скрипт обходит несовместимость свежего агента с High Sierra (`dyld: cannot load 'meshagent'
+(load command 0x80000034 is unknown)`): скачивает_last совместимую сборку 2022 года
+(`macOS_May-2022.zip`), ставит пакет и заменяет бинарник, затем включает `--disableUpdate=1`.
+
+Для клиента: `setup_meshagent.command`, двойной клик в Finder → пароль administrator.
+Исходник для правок: `setup_meshagent_highsierra.sh`.
+
+Если скачанный файл потерял бит исполнения — запустите `bash ~/Desktop/setup_meshagent.command`.
+
+## Файлы и SHA256
+
+| Файл | Назначение | SHA256 |
+|---|---|---|
+| `setup_meshagent_monterey.command` | Monterey, один файл: скачать + запустить | `d19c4388ec480e3b249160d163db8b792b1c97819a384bf5833d2b3102fec1da` |
+| `setup_meshagent.command` | High Sierra, клиент | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
+| `setup_meshagent_highsierra.sh` | High Sierra, исходник (идентичен клиентскому) | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
 
 ## Требования
 
-- High Sierra: macOS 10.13.6, Intel x86-64.
 - Monterey: macOS 12.x, Intel x86-64 (не Apple Silicon).
+- High Sierra: macOS 10.13.6, Intel x86-64.
 - Права administrator на Mac.
-- Интернет: `support.kualkon.top` и `github.com` (только для High Sierra — запасной бинарник).
+- Интернет: `support.kualkon.top` и (для High Sierra) `github.com`.
 
 ## Обслуживание
 
-Если в портале создана новая ссылка-приглашение, меняется только переменная `INVITE_URL`
-в начале **обоих** скриптов. `meshid` извлекается автоматически — править его вручную
-**не нужно**.
+Если в портале создана новая ссылка-приглашение, меняется только `INVITE_URL` в начале
+соответствующего скрипта. `meshid` извлекается автоматически.
 
-Проверка вручную на уже работающем Mac:
+Проверка вручную на работающем Mac:
 
 ```bash
 sudo launchctl print system/meshagent | grep -E 'state =|pid =|successive crashes'
 sudo lsof -nP -iTCP -a -p $(pgrep -f 'meshagent/meshagent' | head -1) | grep ESTABLISHED
 ```
 
-Полная переустановка: просто запустить скрипт ещё раз.
+Полная переустановка — повторный запуск скрипта.
 
-## Безопасность и известные нюансы
+## Известные нюансы
 
-- Скрипты используют только встроенные утилиты macOS (`curl`, `unzip`, `installer`,
-  `launchctl`), дополнительных зависимостей (Homebrew, Node, Python) не требуют.
-- `--disableUpdate=1` выставлен в обеих версиях: в High Sierra он критичен, в Monterey
-  фиксирует проверенную конфигурацию.
-- Запасной бинарник 2022 года в High Sierra не имеет всех новых функций MeshCentral,
-  но обеспечивает стабильное подключение и базовое удалённое управление.
-- Для Apple Silicon нужна отдельная сборка с `ARCHID 29` (или Universal `10005`) —
-  в этом репозитории её нет.
-- Вспомогательный `meshagent-launchagent` отключён в обеих версиях: системный демон
-  обеспечивает подключение к порталу.
+- Для Apple Silicon нужен отдельный агент (`ARCHID 29` или Universal `10005`).
+- `--disableUpdate=1` фиксирует проверенную версию; без него агент может обновиться.
+- Вспомогательный `meshagent-launchagent` отключён: подключение к порталу держит системный демон.
+- Скрипт использует только встроенные утилиты macOS (`curl`, `unzip`, `installer`, `launchctl`).
 
 ## Проверка
 
-- **High Sierra:** полный чистый прогон выполнен на iMac `Tests-iMac.local`
-  (macOS 10.13.6, 17G14042): служба перешла в `state = running`,
-  `successive crashes = 0`, TCP-соединение с `support.kualkon.top:443` установлено
-  (`173.212.230.119`).
-- **Monterey:** скрипт добавлен, синтаксис проверен `bash -n`. Прогон на реальном
-  Mac с macOS 12.x ещё не выполнялся — перед рассылкой стоит проверить на тестовом устройстве.
+- High Sierra: полный прогон на iMac `Tests-iMac.local` (10.13.6, 17G14042) — служба
+  `state = running`, `successive crashes = 0`, TCP до `support.kualkon.top:443` установлен.
+- Monterey: синтаксис проверен `bash -n`; прогон на реальном Mac 12.x ещё предстоит.
