@@ -13,20 +13,23 @@
 Откройте Terminal на клиентском Mac и вставьте **одну строку**:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
 ```
 
 или ещё короче (скрипт сам скачает копию в `/tmp`):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command | bash
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command | bash
 ```
 
 Дальше нужно только ввести пароль administrator по запросу `sudo` (символы не отображаются —
 это нормально) и подождать 20–30 секунд. Ни `chmod`, ни правый клик «Open» не нужны:
 скрипт повышает права через `sudo bash`, поэтому работает даже без бита исполнения.
 
-> После мержа PR замените `opencode/monterey-installer` в ссылках на `main`.
+> Ссылка использует каноническую форму `refs/heads/...`: короткий вариант
+> `raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/...` может
+> отдавать кэшированную старую версию. После мержа PR замените ссылки на
+> `https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/main/setup_meshagent_monterey.command`.
 
 ### Что делает скрипт
 
@@ -67,7 +70,7 @@ Done. Check the device in MeshCentral (group Test).
 
 | Файл | Назначение | SHA256 |
 |---|---|---|
-| `setup_meshagent_monterey.command` | Monterey, один файл: скачать + запустить | `d19c4388ec480e3b249160d163db8b792b1c97819a384bf5833d2b3102fec1da` |
+| `setup_meshagent_monterey.command` | Monterey, один файл: скачать + запустить | `30840ea73fd2ad2581b2dcfe3eec3bf1f18c54d61cae2d83f3add62b5087c440` |
 | `setup_meshagent.command` | High Sierra, клиент | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
 | `setup_meshagent_highsierra.sh` | High Sierra, исходник (идентичен клиентскому) | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
 

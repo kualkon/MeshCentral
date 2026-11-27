@@ -4,15 +4,15 @@
 # launchd with --disableUpdate=1 and verifies the portal connection.
 #
 # Download and run in one line (Terminal):
-#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
+#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
 #
 # Or paste the one directly:
-#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command | bash
+#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command | bash
 set -euo pipefail
 
 PORTAL="support.kualkon.top"
 INVITE_URL='https://support.kualkon.top/agentinvite?c=fAcKPBtL5y7RwyzOXEIy3NAGrS5iLG4cketkejoFbqwZx$77I83tJeeL4RxaZtMjj$MQ2zlH0QZvqXo1KtCakfvYPrWBw6QdgPHgZgmKdY6FMWRLOXGRj101hZh520b74eV4V3tOjZPqk$DxUdl5gj@jxF2GdHMkVd$fZ1EzpyZXb7TX7r0VaPf9$8mCbXJ4RK6mW6wz$U8zASs@'
-SELF_URL='https://raw.githubusercontent.com/kualkon/MeshCentral/opencode/monterey-installer/setup_meshagent_monterey.command'
+SELF_URL='https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command'
 ARCHID=16
 
 DAEMON_PLIST='/Library/LaunchDaemons/meshagent.plist'
