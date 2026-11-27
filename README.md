@@ -64,7 +64,7 @@ Done. Check the device in MeshCentral (group Test).
 
 | Файл | Назначение | SHA256 |
 |---|---|---|
-| `setup_meshagent_monterey.command` | Monterey, один файл: скачать + запустить | `30840ea73fd2ad2581b2dcfe3eec3bf1f18c54d61cae2d83f3add62b5087c440` |
+| `setup_meshagent_monterey.command` | Monterey, один файл: скачать + запустить | `86c0ee0a319d2a894a1459dd818a2a9f2a803d6963eb94afa851f6f8c2a589c2` |
 | `setup_meshagent.command` | High Sierra, клиент | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
 | `setup_meshagent_highsierra.sh` | High Sierra, исходник (идентичен клиентскому) | `aafab82e3b186e7ec49062dd489b5d537ea29bb64823730b4248ebcd444dbfad` |
 
