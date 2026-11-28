@@ -1,22 +1,33 @@
 #!/bin/bash
-# MeshCentral agent for macOS 10.13.x High Sierra (Intel)
-# Self-contained: downloads the agent from the invite, replaces the
-# incompatible current binary with the last High Sierra compatible one,
-# installs it as a LaunchDaemon and verifies the connection.
+# MeshCentral agent installer for macOS 10.13.x High Sierra (Intel).
+# Downloads a fresh invite, installs the official package, replaces the
+# incompatible binary with the last High Sierra compatible build, configures
+# launchd with --disableUpdate=1 and verifies the portal connection.
+#
+# Download and run in one line (Terminal):
+#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_highsierra.command -o /tmp/setup_meshagent_highsierra.command && sudo bash /tmp/setup_meshagent_highsierra.command
 set -euo pipefail
 
 PORTAL="support.kualkon.top"
 INVITE_URL='https://support.kualkon.top/agentinvite?c=fAcKPBtL5y7RwyzOXEIy3NAGrS5iLG4cketkejoFbqwZx$77I83tJeeL4RxaZtMjj$MQ2zlH0QZvqXo1KtCakfvYPrWBw6QdgPHgZgmKdY6FMWRLOXGRj101hZh520b74eV4V3tOjZPqk$DxUdl5gj@jxF2GdHMkVd$fZ1EzpyZXb7TX7r0VaPf9$8mCbXJ4RK6mW6wz$U8zASs@'
+SELF_URL='https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_highsierra.command'
 OLD_AGENT_URL='https://github.com/Ylianst/MeshAgent/files/8642664/macOS_May-2022.zip'
+ARCHID=16
 
 DAEMON_PLIST='/Library/LaunchDaemons/meshagent.plist'
 AGENT_PLIST='/Library/LaunchAgents/meshagent-launchagent.plist'
 INSTALL_DIR='/usr/local/mesh_services/meshagent/meshagent'
 
 # --- elevate once -----------------------------------------------------------
+# `sudo bash "$0"` works even when the downloaded file lost its executable bit.
+# When piped from curl, download a copy to /tmp first, then run it as root.
 if [ "$(id -u)" -ne 0 ]; then
   echo "Requesting administrator privileges..."
-  exec sudo "$0" "$@"
+  if [ -f "$0" ]; then
+    exec sudo bash "$0" "$@"
+  fi
+  curl -fsSL --retry 3 --connect-timeout 20 "$SELF_URL" -o /tmp/setup_meshagent_highsierra.command
+  exec sudo bash /tmp/setup_meshagent_highsierra.command "$@"
 fi
 
 echo "=========================================================="
@@ -53,7 +64,7 @@ if [ -z "$MESHID" ]; then
   echo "ERROR: could not read meshid from the invitation page" >&2
   exit 1
 fi
-AGENT_URL="https://${PORTAL}/meshosxagent?id=16&meshid=${MESHID}"
+AGENT_URL="https://${PORTAL}/meshosxagent?id=${ARCHID}&meshid=${MESHID}"
 echo "Downloading agent from ${PORTAL} ..."
 curl -fL --retry 3 --connect-timeout 20 -o "$TMP/agent.zip" "$AGENT_URL"
 echo "Downloading High Sierra compatible binary ..."
