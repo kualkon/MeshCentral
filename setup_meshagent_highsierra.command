@@ -5,12 +5,12 @@
 # launchd with --disableUpdate=1 and verifies the portal connection.
 #
 # Download and run in one line (Terminal):
-#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_highsierra.command -o /tmp/setup_meshagent_highsierra.command && sudo bash /tmp/setup_meshagent_highsierra.command
+#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/main/setup_meshagent_highsierra.command -o /tmp/setup_meshagent_highsierra.command && sudo bash /tmp/setup_meshagent_highsierra.command
 set -euo pipefail
 
 PORTAL="support.kualkon.top"
 INVITE_URL='https://support.kualkon.top/agentinvite?c=fAcKPBtL5y7RwyzOXEIy3NAGrS5iLG4cketkejoFbqwZx$77I83tJeeL4RxaZtMjj$MQ2zlH0QZvqXo1KtCakfvYPrWBw6QdgPHgZgmKdY6FMWRLOXGRj101hZh520b74eV4V3tOjZPqk$DxUdl5gj@jxF2GdHMkVd$fZ1EzpyZXb7TX7r0VaPf9$8mCbXJ4RK6mW6wz$U8zASs@'
-SELF_URL='https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_highsierra.command'
+SELF_URL='https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/main/setup_meshagent_highsierra.command'
 OLD_AGENT_URL='https://github.com/Ylianst/MeshAgent/files/8642664/macOS_May-2022.zip'
 ARCHID=16
 

@@ -13,20 +13,20 @@
 
 ---
 
-## Быстрый старт: скачать и запустить одной командой
+## Команды для терминала: скачать и запустить одной строкой
 
 Откройте **Terminal** на клиентском Mac и вставьте полностью **одну строку** — свою для нужной ОС.
 
 ### High Sierra (10.13.x)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_highsierra.command -o /tmp/setup_meshagent_highsierra.command && sudo bash /tmp/setup_meshagent_highsierra.command
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/main/setup_meshagent_highsierra.command -o /tmp/setup_meshagent_highsierra.command && sudo bash /tmp/setup_meshagent_highsierra.command
 ```
 
 ### Monterey (12.x)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && sudo bash /tmp/setup_meshagent_monterey.command
+curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/main/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && sudo bash /tmp/setup_meshagent_monterey.command
 ```
 
 **Дальше:**
@@ -38,10 +38,9 @@ curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/open
 `chmod`, «правый клик → Open» и двойной клик в Finder **не нужны**: команда запускает скрипт
 через `sudo bash`, поэтому справляется с любыми правами скачанного файла и с карантином macOS.
 
-> Ссылки ведут на ветку PR #1. После мержа замените
-> `refs/heads/opencode/monterey-installer` на `refs/heads/main` в обеих командах.
-> Форма `refs/heads/...` выбрана намеренно: короткий вариант
-> `raw.githubusercontent.com/kualkon/MeshCentral/<ветка>/...` может отдавать кэшированную старую версию.
+> Ссылки ведут на стабильную ветку `main`. Форма `refs/heads/...` выбрана намеренно:
+> короткий вариант `raw.githubusercontent.com/kualkon/MeshCentral/<ветка>/...` может
+> отдавать кэшированную старую версию файла.
 
 ---
 
@@ -141,8 +140,8 @@ sudo lsof -nP -iTCP -a -p $(pgrep -f 'meshagent/meshagent' | head -1) | grep EST
 ## Контрольные суммы (SHA256)
 
 ```
-3d9c5dcbba00c89882a3e420cdc6c8d978b287d08d0bf5b901e6b3c74a105031  setup_meshagent_highsierra.command
-44a6798b471896296904b85b0d8f1af704b78448fb2415edaba3bf394c98ca4c  setup_meshagent_monterey.command
+c7745188a93f499b6a1c659adf402fd15aef937b2ed4285a56f7d12c7a7a8819  setup_meshagent_highsierra.command
+40089175e98d895e7a947edb50559abd1fe831870f08bd89e84521e1bd249b1f  setup_meshagent_monterey.command
 ```
 
 ---
