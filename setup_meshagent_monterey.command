@@ -4,7 +4,7 @@
 # launchd with --disableUpdate=1 and verifies the portal connection.
 #
 # Download and run in one line (Terminal):
-#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && bash /tmp/setup_meshagent_monterey.command
+#   curl -fsSL https://raw.githubusercontent.com/kualkon/MeshCentral/refs/heads/opencode/monterey-installer/setup_meshagent_monterey.command -o /tmp/setup_meshagent_monterey.command && sudo bash /tmp/setup_meshagent_monterey.command
 #
 set -euo pipefail
 
